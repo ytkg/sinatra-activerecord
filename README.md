@@ -12,6 +12,7 @@ simplicity, let's assume you're using SQLite:
 ```ruby
 gem "sinatra-activerecord"
 gem "sqlite3"
+gem "rake"
 ```
 
 Now require it in your Sinatra application, and establish the database

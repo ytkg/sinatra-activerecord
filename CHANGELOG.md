@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.2.3
+
+- Allow ActiveRecord 4
+
 ## Version 1.2.2
 
 - Fix not allowing environments other than "development", "test" and "production".

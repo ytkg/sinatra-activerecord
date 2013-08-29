@@ -1,6 +1,21 @@
 require 'rake'
 
 namespace :db do
+  desc "create the database from config/database.yml from the current Sinatra env"
+  task :create do
+    Sinatra::ActiveRecordTasks.create()
+  end
+
+  desc "drops the data from config/database.yml from the current Sinatra env"
+  task :drop do
+    Sinatra::ActiveRecordTasks.drop()
+  end
+
+  desc "create the database and load the schema"
+  task :setup do
+    Sinatra::ActiveRecordTasks.setup()
+  end
+
   desc "create an ActiveRecord migration"
   task :create_migration do
     Sinatra::ActiveRecordTasks.create_migration(ENV["NAME"], ENV["VERSION"])

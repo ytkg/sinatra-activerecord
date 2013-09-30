@@ -18,10 +18,17 @@ module Sinatra
       end
     end
 
+    def seed
+      silence_activerecord do
+        load("db/seeds.rb")
+      end
+    end
+
     def setup
       silence_activerecord do
         create()
         load_schema()
+        seed()
       end
     end
 

@@ -11,6 +11,11 @@ namespace :db do
     Sinatra::ActiveRecordTasks.drop()
   end
 
+  desc "load the seed data from db/seeds.rb"
+  task :seed do
+    Sinatra::ActiveRecordTasks.seed()
+  end
+
   desc "create the database and load the schema"
   task :setup do
     Sinatra::ActiveRecordTasks.setup()

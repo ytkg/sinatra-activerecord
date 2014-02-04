@@ -59,7 +59,7 @@ module Sinatra
     private
 
     def migrations_dir
-      ActiveRecord::Migrator.migrations_paths.first
+      ActiveRecord::Migrator.migrations_path
     end
 
     def silence_activerecord(&block)

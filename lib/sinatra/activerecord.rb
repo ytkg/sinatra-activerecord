@@ -21,7 +21,10 @@ module Sinatra
       @database ||= begin
         ActiveRecord::Base.logger = activerecord_logger
         ActiveRecord::Base.establish_connection(resolve_spec(database_spec))
-        ActiveRecord::Base.connection
+        begin
+          ActiveRecord::Base.connection
+        rescue Exception => e
+        end
         ActiveRecord::Base
       end
     end
@@ -37,7 +40,10 @@ module Sinatra
         require 'erb'
 
         database_hash = YAML.load(ERB.new(File.read(path)).result) || {}
+        ActiveRecord::Base.configurations = database_hash
+
         database_hash = database_hash[environment.to_s] if database_hash[environment.to_s]
+
         set :database, database_hash
       end
     end

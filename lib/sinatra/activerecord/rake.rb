@@ -6,6 +6,32 @@ module Sinatra
   module ActiveRecordTasks
     extend self
 
+    def create
+      silence_activerecord do
+        ActiveRecord::Tasks::DatabaseTasks.create(config)
+      end
+    end
+
+    def drop
+      silence_activerecord do
+        ActiveRecord::Tasks::DatabaseTasks.drop(config)
+      end
+    end
+
+    def seed
+      silence_activerecord do
+        load("db/seeds.rb")
+      end
+    end
+
+    def setup
+      silence_activerecord do
+        create()
+        load_schema()
+        seed()
+      end
+    end
+
     def create_migration(migration_name, version = nil)
       raise "No NAME specified. Example usage: `rake db:create_migration NAME=create_users`" if migration_name.nil?
 
@@ -57,6 +83,10 @@ module Sinatra
     end
 
     private
+
+    def config
+      ActiveRecord::Base.configurations[Sinatra::Application.environment.to_s]
+    end
 
     def migrations_dir
       ActiveRecord::Migrator.migrations_path

@@ -78,14 +78,40 @@ module Sinatra
       end
     end
 
+    def purge
+      if config
+        ActiveRecord::Tasks::DatabaseTasks.purge(config)
+      else
+        raise ActiveRecord::ConnectionNotEstablished
+      end
+    end
+
     def load_schema(file_name = 'db/schema.rb')
       load(file_name)
     end
 
+    def with_config_environment(environment, &block)
+      previous_environment = config_environment
+      begin
+        config_environment(environment)
+        yield
+      ensure
+        config_environment(previous_environment)
+      end
+    end
+
     private
 
+    def config_environment(env = nil)
+      if env
+        @config_environment = env
+      else
+        @config_environment ||= Sinatra::Application.environment.to_s
+      end
+    end
+
     def config
-      ActiveRecord::Base.configurations[Sinatra::Application.environment.to_s]
+      ActiveRecord::Base.configurations[config_environment]
     end
 
     def migrations_dir

@@ -11,7 +11,13 @@ describe "Rake tasks" do
 
   before(:each) do
     ActiveRecord::Base.remove_connection
-    ActiveRecord::Base.establish_connection("sqlite3:///tmp/foo.sqlite3")
+
+    ActiveRecord::Tasks::DatabaseTasks.root = File.expand_path('.')
+
+    database_hash = YAML.load(ERB.new(File.read("spec/fixtures/database.yml")).result) || {}
+    ActiveRecord::Base.configurations = database_hash
+    ActiveRecord::Base.establish_connection(database_hash['development'])
+
     ActiveRecord::Migrator.migrations_paths = "tmp"
   end
 
@@ -143,4 +149,51 @@ describe "Rake tasks" do
       end
     end
   end
+
+  describe 'db:test' do
+    describe 'db:test:purge' do
+      it "aborts if there are no adapters defined" do
+        ActiveRecord::Base.remove_connection
+        ActiveRecord::Base.configurations = {}
+        expect { purge }.to raise_error(ActiveRecord::ConnectionNotEstablished)
+      end
+
+      it 'purges database' do
+        ActiveRecord::Migration.class_eval do
+          create_table :posts do |t|
+            t.string :title
+          end
+        end
+
+        ActiveRecord::Base.connection.execute "insert into posts (title) values ('Man Lands On Moon')"
+
+        purge
+
+        expect {
+          ActiveRecord::Base.connection.select("select * from posts").length == 0
+        }.to be_true
+      end
+
+      it 'respects environment' do
+        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
+
+        ActiveRecord::Migration.class_eval do
+          create_table :posts do |t|
+            t.string :title
+          end
+        end
+
+        ActiveRecord::Base.connection.execute "insert into posts (title) values ('Man Lands On Moon')"
+
+        with_config_environment 'test' do
+          purge
+        end
+
+        expect {
+          ActiveRecord::Base.connection.select("select * from posts").length == 0
+        }.to be_true
+      end
+    end
+  end
+
 end

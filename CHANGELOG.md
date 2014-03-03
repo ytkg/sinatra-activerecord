@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.4.0
+
+- Added `db:test:prepare` Rake task.
+
 ## Version 1.3.0
 
 - Added `db:create`, `db:drop` and `db:reset` Rake tasks.

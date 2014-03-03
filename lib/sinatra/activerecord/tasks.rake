@@ -49,4 +49,24 @@ namespace :db do
       Sinatra::ActiveRecordTasks.load_schema()
     end
   end
+
+  namespace :test do
+    task :purge do
+      Sinatra::ActiveRecordTasks.with_config_environment 'test' do
+        Sinatra::ActiveRecordTasks.purge()
+      end
+    end
+
+    task :load => :purge do
+      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
+      Sinatra::ActiveRecordTasks.with_config_environment 'test' do
+        Sinatra::ActiveRecordTasks.load_schema()
+      end
+    end
+
+    desc 'Prepare test database from development schema'
+    task :prepare do
+      Rake::Task["db:test:load"].invoke
+    end
+  end
 end

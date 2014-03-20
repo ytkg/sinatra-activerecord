@@ -150,6 +150,65 @@ describe "Rake tasks" do
     end
   end
 
+  describe 'db:structure' do
+    def schema_file
+      'foo_schema.sql'
+    end
+
+    after(:each) do
+      File.delete(schema_file)
+    end
+
+    describe "db:structure:dump" do
+      it "should dump the schema for the current database state" do
+        dump_structure(schema_file)
+        expect {
+          File.exists?(schema_file)
+        }.to be_true
+      end
+    end
+
+    describe "db:structure:load" do
+      it "should load the schema file " do
+        # Create some tables
+        ActiveRecord::Migration.class_eval do
+          create_table :posts do |t|
+            t.string  :title
+            t.text :body
+          end
+
+          create_table :people do |t|
+            t.string :first_name
+            t.string :last_name
+            t.string :short_name
+          end
+        end
+
+        # Dump file
+        dump_structure(schema_file)
+
+        # Drop table
+        begin
+          ActiveRecord::Schema.drop_table('posts')
+          ActiveRecord::Schema.drop_table('people')
+        rescue
+          nil
+        end
+
+        # Load schema
+        load_structure(schema_file)
+
+        # Expect tables to be there
+        expect(
+          ActiveRecord::Base.connection.table_exists?('posts')
+        ).to be_true
+        expect(
+          ActiveRecord::Base.connection.table_exists?('people')
+        ).to be_true
+      end
+    end
+  end
+
   describe 'db:test' do
     describe 'db:test:purge' do
       it "aborts if there are no adapters defined" do

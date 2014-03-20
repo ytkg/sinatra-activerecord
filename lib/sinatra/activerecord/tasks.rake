@@ -29,13 +29,21 @@ namespace :db do
   desc "migrate the database (use version with VERSION=n)"
   task :migrate do
     Sinatra::ActiveRecordTasks.migrate(ENV["VERSION"])
-    Rake::Task["db:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
+
+    case ActiveRecord::Base.schema_format
+      when :ruby then Rake::Task["db:schema:dump"].invoke
+      when :sql  then Rake::Task["db:structure:dump"].invoke
+    end
   end
 
   desc "roll back the migration (use steps with STEP=n)"
   task :rollback do
     Sinatra::ActiveRecordTasks.rollback(ENV["STEP"])
-    Rake::Task["db:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
+
+    case ActiveRecord::Base.schema_format
+      when :ruby then Rake::Task["db:schema:dump"].invoke
+      when :sql  then Rake::Task["db:structure:dump"].invoke
+    end
   end
 
   namespace :schema do
@@ -47,6 +55,18 @@ namespace :db do
     desc "load schema into database"
     task :load do
       Sinatra::ActiveRecordTasks.load_schema()
+    end
+  end
+
+  namespace :structure do
+    desc "dump schema into a file as SQL"
+    task :dump do
+      Sinatra::ActiveRecordTasks.dump_structure()
+    end
+
+    desc "load schema into database"
+    task :load do
+      Sinatra::ActiveRecordTasks.load_structure()
     end
   end
 

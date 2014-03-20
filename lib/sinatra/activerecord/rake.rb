@@ -78,6 +78,10 @@ module Sinatra
       end
     end
 
+    def dump_structure(file_name = 'db/structure.sql')
+      ActiveRecord::Tasks::DatabaseTasks.structure_dump(config, file_name)
+    end
+
     def purge
       if config
         ActiveRecord::Tasks::DatabaseTasks.purge(config)
@@ -88,6 +92,10 @@ module Sinatra
 
     def load_schema(file_name = 'db/schema.rb')
       load(file_name)
+    end
+
+    def load_structure(file_name = 'db/structure.sql')
+      ActiveRecord::Tasks::DatabaseTasks.structure_load(config, file_name)
     end
 
     def with_config_environment(environment, &block)
@@ -111,7 +119,9 @@ module Sinatra
     end
 
     def config
-      ActiveRecord::Base.configurations[config_environment]
+      ActiveRecord::Base.configurations[config_environment] ||
+        #active record expects the keys to be strings, but connection_config returns them as symbols
+        Hash[ActiveRecord::Base.connection_config.map{|key, value| [key.to_s, value]}]
     end
 
     def migrations_dir

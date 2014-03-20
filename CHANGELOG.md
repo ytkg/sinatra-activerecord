@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.5.0
+
+- Added ability to specify `:sql` format of the schema, as well as
+  `db:structure` tasks ([#25](https://github.com/janko-m/sinatra-activerecord/pull/25)).
+  Thanks to @icambron.
+
 ## Version 1.4.0
 
 - Added `db:test:prepare` Rake task.

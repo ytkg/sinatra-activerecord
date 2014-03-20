@@ -3,22 +3,22 @@ require 'rake'
 namespace :db do
   desc "create the database from config/database.yml from the current Sinatra env"
   task :create do
-    Sinatra::ActiveRecordTasks.create()
+    Sinatra::ActiveRecordTasks.create
   end
 
   desc "drops the data from config/database.yml from the current Sinatra env"
   task :drop do
-    Sinatra::ActiveRecordTasks.drop()
+    Sinatra::ActiveRecordTasks.drop
   end
 
   desc "load the seed data from db/seeds.rb"
   task :seed do
-    Sinatra::ActiveRecordTasks.seed()
+    Sinatra::ActiveRecordTasks.seed
   end
 
   desc "create the database and load the schema"
   task :setup do
-    Sinatra::ActiveRecordTasks.setup()
+    Sinatra::ActiveRecordTasks.setup
   end
 
   desc "create an ActiveRecord migration"
@@ -49,38 +49,38 @@ namespace :db do
   namespace :schema do
     desc "dump schema into file"
     task :dump do
-      Sinatra::ActiveRecordTasks.dump_schema()
+      Sinatra::ActiveRecordTasks.dump_schema
     end
 
     desc "load schema into database"
     task :load do
-      Sinatra::ActiveRecordTasks.load_schema()
+      Sinatra::ActiveRecordTasks.load_schema
     end
   end
 
   namespace :structure do
     desc "dump schema into a file as SQL"
     task :dump do
-      Sinatra::ActiveRecordTasks.dump_structure()
+      Sinatra::ActiveRecordTasks.dump_structure
     end
 
     desc "load schema into database"
     task :load do
-      Sinatra::ActiveRecordTasks.load_structure()
+      Sinatra::ActiveRecordTasks.load_structure
     end
   end
 
   namespace :test do
     task :purge do
       Sinatra::ActiveRecordTasks.with_config_environment 'test' do
-        Sinatra::ActiveRecordTasks.purge()
+        Sinatra::ActiveRecordTasks.purge
       end
     end
 
     task :load => :purge do
       ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
       Sinatra::ActiveRecordTasks.with_config_environment 'test' do
-        Sinatra::ActiveRecordTasks.load_schema()
+        Sinatra::ActiveRecordTasks.load_schema
       end
     end
 

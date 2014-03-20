@@ -26,9 +26,9 @@ module Sinatra
 
     def setup
       silence_activerecord do
-        create()
-        load_schema()
-        seed()
+        create
+        load_schema
+        seed
       end
     end
 

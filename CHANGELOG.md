@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.6.0
+
+- Added ability to specify folder for the database ([#26](https://github.com/janko-m/sinatra-activerecord/pull/26)).
+  Thanks to @jamesrwhite.
+
 ## Version 1.5.0
 
 - Added ability to specify `:sql` format of the schema, as well as

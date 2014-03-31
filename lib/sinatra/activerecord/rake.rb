@@ -20,7 +20,7 @@ module Sinatra
 
     def seed
       silence_activerecord do
-        load("db/seeds.rb")
+        load("#{db_dir}/seeds.rb")
       end
     end
 
@@ -64,7 +64,7 @@ module Sinatra
       end
     end
 
-    def dump_schema(file_name = 'db/schema.rb')
+    def dump_schema(file_name = "#{db_dir}/schema.rb")
       silence_activerecord do
         ActiveRecord::Migration.suppress_messages do
           # Create file
@@ -78,7 +78,7 @@ module Sinatra
       end
     end
 
-    def dump_structure(file_name = 'db/structure.sql')
+    def dump_structure(file_name = "#{db_dir}/structure.sql")
       ActiveRecord::Tasks::DatabaseTasks.structure_dump(config, file_name)
     end
 
@@ -90,11 +90,11 @@ module Sinatra
       end
     end
 
-    def load_schema(file_name = 'db/schema.rb')
+    def load_schema(file_name = "#{db_dir}/schema.rb")
       load(file_name)
     end
 
-    def load_structure(file_name = 'db/structure.sql')
+    def load_structure(file_name = "#{db_dir}/structure.sql")
       ActiveRecord::Tasks::DatabaseTasks.structure_load(config, file_name)
     end
 
@@ -106,6 +106,14 @@ module Sinatra
       ensure
         config_environment(previous_environment)
       end
+    end
+
+    def db_dir
+      ActiveRecord::Tasks::DatabaseTasks.db_dir ||= 'db'
+    end
+
+    def db_dir=(dir)
+      ActiveRecord::Tasks::DatabaseTasks.db_dir = dir
     end
 
     private

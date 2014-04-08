@@ -1,0 +1,14 @@
+development:
+  adapter: postgresql
+  database: sample
+  username: sample
+  password: sample
+  host: localhost
+
+test:
+  adapter: postgresql
+  database: sample
+  username: sample
+  password: sample
+  host: localhost
+

@@ -51,6 +51,8 @@ rake db:create                     # create the database from config/database.ym
 rake db:create_migration           # create an ActiveRecord migration
 rake db:drop                       # drops the data from config/database.yml from the current Sinatra env
 rake db:migrate                    # migrate the database (use version with VERSION=n)
+rake db:migrate:reset              # drops and creates the database and then runs the migrations
+rake db:reset                      # drops and creates the database
 rake db:rollback                   # roll back the migration (use steps with STEP=n)
 rake db:schema:dump                # dump schema into file
 rake db:schema:load                # load schema into database

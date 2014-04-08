@@ -36,6 +36,12 @@ namespace :db do
     end
   end
 
+  namespace :migrate do
+    task :reset => ['db:drop', 'db:create', 'db:migrate']
+  end
+
+  task :reset => ['db:drop', 'db:setup']
+
   desc "roll back the migration (use steps with STEP=n)"
   task :rollback do
     Sinatra::ActiveRecordTasks.rollback(ENV["STEP"])

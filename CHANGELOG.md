@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.7.0
+
+- Added `db:reset` and `db:migrate:reset` tasks ([#27](https://github.com/janko-m/sinatra-activerecord/pull/27)).
+  Thanks to @csgavino.
+
 ## Version 1.6.0
 
 - Added ability to specify folder for the database ([#26](https://github.com/janko-m/sinatra-activerecord/pull/26)).

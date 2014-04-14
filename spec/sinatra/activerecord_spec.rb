@@ -98,16 +98,6 @@ arbitrary_environment:
       @app.set :environment, :development
       expect { @app.set :database_file, "database.yml" }.to raise_error(ActiveRecord::AdapterNotSpecified)
     end
-
-    it "handles non-namespaced database.yml" do
-      File.open("tmp/database.yml", "w") do |file|
-        file.write <<-EOS
-adapter: "sqlite3"
-database: "tmp/foo.sqlite3"
-        EOS
-      end
-      expect { @app.set :database_file, "database.yml" }.to establish_database_connection
-    end
   end
 
   context "DATABASE_URL is set" do

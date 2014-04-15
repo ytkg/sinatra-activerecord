@@ -1,8 +1,7 @@
 require 'bundler'
-Bundler.setup
-require 'appraisal'
-
 Bundler::GemHelper.install_tasks
+
+require 'appraisal'
 
 task :default => :spec
 

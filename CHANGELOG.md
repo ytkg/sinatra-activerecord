@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.0.rc
+
+- Simplify the gem, and import all the Rake tasks directly from ActiveRecord.
+
 ## Version 1.7.0
 
 - Added `db:reset` and `db:migrate:reset` tasks ([#27](https://github.com/janko-m/sinatra-activerecord/pull/27)).

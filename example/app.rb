@@ -1,7 +1,8 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 
-require_relative 'user'
+class User < ActiveRecord::Base
+end
 
 class App < Sinatra::Base
   before do

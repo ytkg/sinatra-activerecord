@@ -2,10 +2,8 @@
 
 source "https://rubygems.org"
 
+gem "pry"
+gem "pry-byebug"
 gem "activerecord", "~> 4.1.0"
-
-group :testing do
-  gem "pry"
-end
 
 gemspec :path => "../"

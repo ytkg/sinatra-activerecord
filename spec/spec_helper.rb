@@ -1,25 +1,13 @@
-begin
-  require "pry"
-rescue LoadError
-end
-
-ROOT = File.expand_path("../", File.dirname(__FILE__))
-Dir[File.join(ROOT, "spec/support/**/*.rb")].each &method(:require)
+require 'pry'
+require 'sinatra/activerecord'
 
 RSpec.configure do |config|
-
   config.expect_with :rspec do |c|
-    c.syntax = :expect
+    c.syntax = :expect # Force the "expect" syntax
   end
 
-  config.before(:each) do
-    FileUtils.mkdir_p("tmp")
-    FileUtils.rm("tmp/foo.sqlite3") if File.exists?("tmp/foo.sqlite3")
-  end
+  config.fail_fast = true
 
-  config.after(:each) do
-    FileUtils.rm_rf("tmp")
-  end
-
-  config.include Helpers
+  config.before { FileUtils.mkdir_p("tmp") }
+  config.after  { FileUtils.rm_rf("tmp") }
 end

@@ -1,98 +1,40 @@
-require 'rake'
+require "active_support/core_ext/string/strip"
+require "pathname"
+
+load "active_record/railties/databases.rake"
 
 namespace :db do
-  desc "create the database from config/database.yml from the current Sinatra env"
-  task :create do
-    Sinatra::ActiveRecordTasks.create
-  end
-
-  desc "drops the data from config/database.yml from the current Sinatra env"
-  task :drop do
-    Sinatra::ActiveRecordTasks.drop
-  end
-
-  desc "load the seed data from db/seeds.rb"
-  task :seed do
-    Sinatra::ActiveRecordTasks.seed
-  end
-
-  desc "create the database and load the schema"
-  task :setup do
-    Sinatra::ActiveRecordTasks.setup
-  end
-
-  desc "create an ActiveRecord migration"
+  desc "Create a migration (parameters: NAME, VERSION)"
   task :create_migration do
-    Sinatra::ActiveRecordTasks.create_migration(ENV["NAME"], ENV["VERSION"])
-  end
-
-  desc "migrate the database (use version with VERSION=n)"
-  task :migrate do
-    Sinatra::ActiveRecordTasks.migrate(ENV["VERSION"])
-
-    case ActiveRecord::Base.schema_format
-      when :ruby then Rake::Task["db:schema:dump"].invoke
-      when :sql  then Rake::Task["db:structure:dump"].invoke
-    end
-  end
-
-  namespace :migrate do
-    task :reset => ['db:drop', 'db:create', 'db:migrate']
-  end
-
-  task :reset => ['db:drop', 'db:setup']
-
-  desc "roll back the migration (use steps with STEP=n)"
-  task :rollback do
-    Sinatra::ActiveRecordTasks.rollback(ENV["STEP"])
-
-    case ActiveRecord::Base.schema_format
-      when :ruby then Rake::Task["db:schema:dump"].invoke
-      when :sql  then Rake::Task["db:structure:dump"].invoke
-    end
-  end
-
-  namespace :schema do
-    desc "dump schema into file"
-    task :dump do
-      Sinatra::ActiveRecordTasks.dump_schema
+    unless ENV["NAME"]
+      puts "No NAME specified. Example usage: `rake db:create_migration NAME=create_users`"
+      exit
     end
 
-    desc "load schema into database"
-    task :load do
-      Sinatra::ActiveRecordTasks.load_schema
-    end
-  end
+    name    = ENV["NAME"]
+    version = ENV["VERSION"] || Time.now.utc.strftime("%Y%m%d%H%M%S")
 
-  namespace :structure do
-    desc "dump schema into a file as SQL"
-    task :dump do
-      Sinatra::ActiveRecordTasks.dump_structure
-    end
+    filename = "#{version}_#{name}.rb"
+    dirname  = ActiveRecord::Migrator.migrations_path
+    path     = Pathname(File.join(dirname, filename))
 
-    desc "load schema into database"
-    task :load do
-      Sinatra::ActiveRecordTasks.load_structure
-    end
-  end
-
-  namespace :test do
-    task :purge do
-      Sinatra::ActiveRecordTasks.with_config_environment 'test' do
-        Sinatra::ActiveRecordTasks.purge
+    path.dirname.mkpath
+    path.write <<-MIGRATION.strip_heredoc
+      class #{name.camelize} < ActiveRecord::Migration
+        def change
+        end
       end
-    end
+    MIGRATION
 
-    task :load => :purge do
-      ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
-      Sinatra::ActiveRecordTasks.with_config_environment 'test' do
-        Sinatra::ActiveRecordTasks.load_schema
-      end
-    end
+    puts path
+  end
 
-    desc 'Prepare test database from development schema'
-    task :prepare do
-      Rake::Task["db:test:load"].invoke
-    end
+  task :environment
+
+  Rake::Task["db:test:deprecated"].clear if Rake::Task.task_defined?("db:test:deprecated")
+
+  if ActiveRecord::VERSION::MAJOR == 3
+    Rake::Task["db:load_config"].clear
+    task :rails_env
   end
 end

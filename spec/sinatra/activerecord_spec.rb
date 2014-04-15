@@ -1,121 +1,93 @@
 require 'spec_helper'
 require 'sinatra/base'
-require 'sinatra/activerecord'
+require 'fileutils'
 
 describe "the sinatra extension" do
-  def database_url
-    "sqlite3:///tmp/foo.sqlite3"
+  let(:database_url) do
+    if ActiveRecord::VERSION::STRING.starts_with? "4.1"
+      "sqlite3:tmp/foo.sqlite3"
+    else
+      "sqlite3:///tmp/foo.sqlite3"
+    end
   end
-
-  def new_sinatra_application
+  let(:app) do
     Class.new(Sinatra::Base) do
-      set :app_file, File.join(ROOT, "tmp/app.rb")
+      set :root, nil
       register Sinatra::ActiveRecordExtension
     end
   end
 
-  before(:each) do
-    FileUtils.mkdir_p("tmp")
-    FileUtils.rm_rf("tmp/foo.sqlite3")
-
+  before do
     ActiveRecord::Base.remove_connection
-    @app = new_sinatra_application
   end
 
-  after(:each) do
-    FileUtils.rm_rf("tmp")
+  it "exposes ActiveRecord::Base" do
+    expect(app.database).to eq ActiveRecord::Base
   end
 
-  it "exposes the database object" do
-    expect(
-      @app
-    ).to respond_to(:database)
+  it "establishes the connection with a database url" do
+    app.database = database_url
+
+    expect{ActiveRecord::Base.connection}.not_to raise_error
   end
 
-  it "raises the proper error when trying to establish connection with a nonexisting database" do
-    expect { @app.database }.to raise_error(ActiveRecord::AdapterNotSpecified)
+  it "establishes the connection with a hash" do
+    app.database = {adapter: "sqlite3", database: "tmp/foo.sqlite3"}
+
+    expect{ActiveRecord::Base.connection}.not_to raise_error
   end
 
-  it "establishes the database connection when set" do
-    expect { @app.set :database, database_url }.to establish_database_connection
-    expect { @app.set :database, database_url }.to change{ActiveRecord::Base.connection.last_use}
+  it "handles namespacing into environments" do
+    app.environment = :development
+    app.database = {development: {adapter: "sqlite3", database: "tmp/foo.sqlite3"}}
+
+    expect{ActiveRecord::Base.connection}.not_to raise_error
   end
 
-  it "can have the SQLite database in a folder" do
-    @app.set :database, "sqlite3:///tmp/foo.sqlite3"
-    expect { ActiveRecord::Base.connection }.to_not raise_error
+  it "raises an appropriate error when the database spec is invalid" do
+    expect{app.database = {}}.to raise_error(ActiveRecord::AdapterNotSpecified)
   end
 
-  it "accepts SQLite database URLs without the '3'" do
-    @app.set :database, "sqlite:///tmp/foo.sqlite3"
-    expect { ActiveRecord::Base.connection }.to_not raise_error
+  it "doesn't try to establish connection when database isn't set" do
+    expect{app.database}.not_to raise_error
   end
 
-  it "accepts a hash for the database" do
-    expect { @app.set :database, {adapter: "sqlite3", database: "tmp/foo.sqlite3"} }.to establish_database_connection
+  it "establishes connection from DATABASE_URL if it's present" do
+    ENV["DATABASE_URL"] = database_url
+    app
+
+    expect{ActiveRecord::Base.connection}.not_to raise_error
+
+    ENV.delete("DATABASE_URL")
   end
 
-  describe "database file" do
-    it "accepts a filename for the database" do
-      FileUtils.cp("spec/fixtures/database.yml", "tmp")
-      expect { @app.set :database_file, "database.yml" }.to establish_database_connection
-    end
+  it "allows specifying database through a file" do
+    app.database_file = "spec/fixtures/database.yml"
 
-    it "doesn't raise errors on missing #root" do
-      @app.set :root, nil
-      expect { @app.set :database_file, "database.yml" }.to_not raise_error
-    end
-
-    it "doesn't raise errors on missing file" do
-      expect { @app.set :database_file, "database.yml" }.to_not raise_error
-    end
-
-    it "raises errors on invalid database.yml" do
-      FileUtils.touch("tmp/database.yml")
-      expect { @app.set :database_file, "database.yml" }.to raise_error(ActiveRecord::AdapterNotSpecified)
-    end
-
-    it "handles namespacing into environments" do
-      FileUtils.cp("spec/fixtures/database.yml", "tmp")
-      @app.set :environment, :development
-      expect { @app.set :database_file, "database.yml" }.to establish_database_connection
-      @app.set :database_spec, nil
-      @app.set :environment, :production
-      expect { @app.set :database_file, "database.yml" }.to raise_error(ActiveRecord::AdapterNotSpecified)
-    end
-
-    it "allows different arbitary environments" do
-      File.open("tmp/database.yml", "w") do |file|
-        file.write <<-EOS
-arbitrary_environment:
-  adapter: "sqlite3"
-  database: "tmp/foo.sqlite3"
-        EOS
-      end
-      @app.set :environment, :arbitrary_environment
-      expect { @app.set :database_file, "database.yml" }.to establish_database_connection
-      @app.set :database_spec, nil
-      @app.set :environment, :development
-      expect { @app.set :database_file, "database.yml" }.to raise_error(ActiveRecord::AdapterNotSpecified)
-    end
+    expect{ActiveRecord::Base.connection}.not_to raise_error
   end
 
-  context "DATABASE_URL is set" do
-    before(:all) { ENV["DATABASE_URL"] = database_url }
-    after(:all) { ENV.delete("DATABASE_URL") }
+  it "expands database file path from the app root if present" do
+    app.root = "spec/fixtures"
+    app.database_file = "database.yml"
 
-    it "establishes the connection upon registering" do
-      ActiveRecord::Base.remove_connection
-      expect { @app = new_sinatra_application }.to establish_database_connection
-    end
+    expect{ActiveRecord::Base.connection}.not_to raise_error
+  end
 
-    it "is overriden by config/database.yml" do
-      FileUtils.mkdir_p("config")
-      FileUtils.touch("config/database.yml")
+  it "doesn't expand the database file path from the app root if the path is absolute" do
+    app.root = "spec/fixtures"
+    app.database_file = "#{Dir.pwd}/spec/fixtures/database.yml"
 
-      expect { @app = new_sinatra_application }.to raise_error(ActiveRecord::AdapterNotSpecified)
+    expect{ActiveRecord::Base.connection}.not_to raise_error
+  end
 
-      FileUtils.rm_rf("config")
-    end
+  it "raises an error on invalid database.yml" do
+    FileUtils.touch("tmp/database.yml")
+
+    expect{app.database_file = "tmp/database.yml"}.to raise_error(ActiveRecord::AdapterNotSpecified)
+  end
+
+  it "raises an error on missing database.yml" do
+    expect{app.database_file = "foo.yml"}.to raise_error(Errno::ENOENT)
   end
 end

@@ -1,5 +1,6 @@
 require "active_support/core_ext/string/strip"
 require "pathname"
+require "fileutils"
 
 namespace :db do
   desc "Create a migration (parameters: NAME, VERSION)"
@@ -23,10 +24,10 @@ namespace :db do
 
     filename = "#{version}_#{name}.rb"
     dirname  = ActiveRecord::Migrator.migrations_path
-    path     = Pathname(File.join(dirname, filename))
+    path     = File.join(dirname, filename)
 
-    path.dirname.mkpath
-    path.write <<-MIGRATION.strip_heredoc
+    FileUtils.mkdir_p(dirname)
+    File.write path, <<-MIGRATION.strip_heredoc
       class #{name.camelize} < ActiveRecord::Migration
         def change
         end

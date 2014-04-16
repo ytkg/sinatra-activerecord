@@ -14,6 +14,14 @@ namespace :db do
     name    = ENV["NAME"]
     version = ENV["VERSION"] || Time.now.utc.strftime("%Y%m%d%H%M%S")
 
+    ActiveRecord::Migrator.migrations_paths.each do |directory|
+      migration_files = Pathname(directory).children
+      if duplicate = migration_files.find { |path| path.basename.to_s.include?(name) }
+        puts "Another migration is already named \"#{name}\": #{duplicate}."
+        exit
+      end
+    end
+
     filename = "#{version}_#{name}.rb"
     dirname  = ActiveRecord::Migrator.migrations_path
     path     = Pathname(File.join(dirname, filename))

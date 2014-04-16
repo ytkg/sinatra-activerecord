@@ -1,8 +1,6 @@
 require "active_support/core_ext/string/strip"
 require "pathname"
 
-load "active_record/railties/databases.rake"
-
 namespace :db do
   desc "Create a migration (parameters: NAME, VERSION)"
   task :create_migration do
@@ -35,14 +33,5 @@ namespace :db do
     MIGRATION
 
     puts path
-  end
-
-  task :environment
-
-  Rake::Task["db:test:deprecated"].clear if Rake::Task.task_defined?("db:test:deprecated")
-
-  if ActiveRecord::VERSION::MAJOR == 3
-    Rake::Task["db:load_config"].clear
-    task :rails_env
   end
 end

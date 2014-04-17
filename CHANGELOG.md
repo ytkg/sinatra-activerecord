@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.0.rc2
+
+- Remove call to `Pathname#write`, which only exists in Ruby 2.1.
+
 ## Version 2.0.0.rc
 
 - Simplify the gem, and import all the Rake tasks directly from ActiveRecord.

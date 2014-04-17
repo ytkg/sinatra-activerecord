@@ -4,6 +4,12 @@ Extends [Sinatra](http://www.sinatrarb.com/) with extension methods and Rake
 tasks for dealing with an SQL database using the
 [ActiveRecord ORM](https://github.com/rails/rails/tree/master/activerecord).
 
+## ActiveRecord 4.1
+
+For ActiveRecord 4.1 use sinatra-activerecord `2.0.0.rc2`. I recommend upgrading
+even if you don't use ActiveRecord 4.1, because it includes *all* the Rake tasks
+that ActiveRecord has.
+
 ## Setup
 
 Put it in your `Gemfile`, along with the adapter of your database. For

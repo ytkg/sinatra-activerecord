@@ -25,6 +25,7 @@ Now require it in your Sinatra application, and establish the database
 connection:
 
 ```ruby
+# app.rb
 require "sinatra/activerecord"
 
 set :database, "sqlite3:///foo.sqlite3"
@@ -45,6 +46,7 @@ end
 Now require the rake tasks and your app in your `Rakefile`:
 
 ```ruby
+# Rakefile
 require "sinatra/activerecord/rake"
 require "./app"
 ```

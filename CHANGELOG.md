@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.0.1
+
+- Fixed the issue where it mattered in which order `sinatra/activerecord/rake`
+  and `./app` are required.
+
 ## Version 2.0.0
 
 - ActiveRecord 4.1 is now supported.

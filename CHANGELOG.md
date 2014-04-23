@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.0
+
+- No changes
+
 ## Version 2.0.0.rc2
 
 - Remove call to `Pathname#write`, which only exists in Ruby 2.1.

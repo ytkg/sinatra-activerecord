@@ -23,10 +23,12 @@ connection:
 require "sinatra/activerecord"
 
 set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
+# or set :database_file, "path/to/database.yml"
 ```
 
-Alternatively, you can set the database with a hash or a YAML file. Take a look at
-[this wiki](https://github.com/janko-m/sinatra-activerecord/wiki/Alternative-database-setup).
+If you have a `config/database.yml`, it will automatically be loaded, no need
+to specify it. Also, in production, the `$DATABASE_URL` environment variable
+will automatically be read as the database (if you haven't specified otherwise).
 
 Note that in **modular** Sinatra applications you will need to first register
 the extension:

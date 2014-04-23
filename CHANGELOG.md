@@ -2,15 +2,9 @@
 
 ## Version 2.0.0
 
-- No changes
-
-## Version 2.0.0.rc2
-
-- Remove call to `Pathname#write`, which only exists in Ruby 2.1.
-
-## Version 2.0.0.rc
-
-- Simplify the gem, and import all the Rake tasks directly from ActiveRecord.
+- ActiveRecord 4.1 is now supported.
+- Rake tasks are now directly imported from ActiveRecord, which means *all* of
+  the tasks are now available.
 
 ## Version 1.7.0
 

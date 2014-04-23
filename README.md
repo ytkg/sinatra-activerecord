@@ -22,7 +22,7 @@ connection:
 # app.rb
 require "sinatra/activerecord"
 
-set :database, "sqlite3:///foo.sqlite3"
+set :database, {adapter: "sqlite3", database: "foo.sqlite3"}
 ```
 
 Alternatively, you can set the database with a hash or a YAML file. Take a look at

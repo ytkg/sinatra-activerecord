@@ -15,5 +15,6 @@ ActiveRecord::Tasks::DatabaseTasks.tap do |config|
   config.database_configuration = ActiveRecord::Base.configurations
 end
 
+Rake::Task["db:load_config"].clear
 Rake::Task.define_task("db:environment")
 Rake::Task["db:test:deprecated"].clear if Rake::Task.task_defined?("db:test:deprecated")

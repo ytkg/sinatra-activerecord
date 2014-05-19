@@ -47,6 +47,20 @@ require "sinatra/activerecord/rake"
 require "./app"
 ```
 
+In case you're using tools like SimpleCov, where the application needs to be
+required only inside SimpleCov's Rake tasks, you can do
+
+```ruby
+# Rakefile
+require "sinatra/activerecord/rake"
+
+namespace :db do
+  task :load_config do
+    require "./app"
+  end
+end
+```
+
 In the Terminal test that it works:
 
 ```sh

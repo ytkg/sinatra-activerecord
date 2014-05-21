@@ -44,6 +44,13 @@ describe "the sinatra extension" do
     expect{ActiveRecord::Base.connection}.not_to raise_error
   end
 
+  it "allows settings environments as Strings" do
+    app.environment = "development"
+    app.database = {development: {adapter: "sqlite3", database: "tmp/foo.sqlite3"}}
+
+    expect{ActiveRecord::Base.connection}.not_to raise_error
+  end
+
   it "raises an appropriate error when the database spec is invalid" do
     expect{app.database = {}}.to raise_error(ActiveRecord::AdapterNotSpecified)
   end

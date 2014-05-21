@@ -36,7 +36,7 @@ module Sinatra
     def database=(spec)
       if spec.is_a?(Hash) and spec.symbolize_keys[environment.to_sym]
         ActiveRecord::Base.configurations = spec.stringify_keys
-        ActiveRecord::Base.establish_connection(environment)
+        ActiveRecord::Base.establish_connection(environment.to_sym)
       else
         ActiveRecord::Base.establish_connection(spec)
         ActiveRecord::Base.configurations = {

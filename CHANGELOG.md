@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.2
+
+- Allow setting the environment as a String, aside from Symbol.
+
 ## Version 2.0.1
 
 - Fixed the issue where it mattered in which order `sinatra/activerecord/rake`

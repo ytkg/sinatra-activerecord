@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.3
+
+- Use `File.exist?` instead of `File.exists?` to avoid warnings (thanks to [**@matthiase**](https://github.com/matthiase)).
+
 ## Version 2.0.2
 
 - Allow setting the environment as a String, aside from Symbol.

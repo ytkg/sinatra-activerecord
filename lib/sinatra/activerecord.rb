@@ -17,7 +17,7 @@ module Sinatra
   module ActiveRecordExtension
     def self.registered(app)
       app.set :database, ENV['DATABASE_URL'] if ENV['DATABASE_URL']
-      app.set :database_file, "#{Dir.pwd}/config/database.yml" if File.exists?("#{Dir.pwd}/config/database.yml")
+      app.set :database_file, "#{Dir.pwd}/config/database.yml" if File.exist?("#{Dir.pwd}/config/database.yml")
       ActiveRecord::Base.logger = Logger.new(STDOUT) unless defined?(Rake)
 
       app.helpers ActiveRecordHelper

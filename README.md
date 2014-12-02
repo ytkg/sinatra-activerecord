@@ -64,7 +64,7 @@ end
 In the Terminal test that it works:
 
 ```sh
-$ rake -T
+$ bundle exec rake -T
 rake db:create            # Create the database from DATABASE_URL or config/database.yml for the current Rails.env (use db:create:all to create all dbs in the config)
 rake db:create_migration  # Create a migration (parameters: NAME, VERSION)
 rake db:drop              # Drops the database using DATABASE_URL or the current Rails.env (use db:drop:all to drop all databases)
@@ -87,7 +87,7 @@ And that's it, you're all set :)
 You can create a migration:
 
 ```sh
-$ rake db:create_migration NAME=create_users
+$ bundle exec rake db:create_migration NAME=create_users
 ```
 
 This will create a migration file in your migrations directory (`./db/migrate`
@@ -106,7 +106,7 @@ end
 Now migrate the database:
 
 ```sh
-$ rake db:migrate
+$ bundle exec rake db:migrate
 ```
 
 You can also write models:

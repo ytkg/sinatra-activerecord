@@ -2,9 +2,7 @@ require 'pry'
 require 'sinatra/activerecord'
 
 RSpec.configure do |config|
-  config.expect_with :rspec do |c|
-    c.syntax = :expect # Force the "expect" syntax
-  end
+  config.disable_monkey_patching!
 
   config.fail_fast = true
 

@@ -10,7 +10,7 @@ class ActiveRecord::Migration
   alias_method_chain :migrate, :quietness
 end
 
-describe "the rake tasks" do
+RSpec.describe "the rake tasks" do
   before do
     Class.new(Sinatra::Base) do
       register Sinatra::ActiveRecordExtension

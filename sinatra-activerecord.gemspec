@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "activerecord", ">= 3.2"
 
   gem.add_development_dependency "rake"
-  gem.add_development_dependency "rspec", ">= 2.10"
+  gem.add_development_dependency "rspec", "~> 3.1"
   gem.add_development_dependency "sqlite3"
   gem.add_development_dependency "appraisal"
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'sinatra/base'
 require 'fileutils'
 
-describe "the sinatra extension" do
+RSpec.describe "the sinatra extension" do
   let(:database_url) do
     if ActiveRecord::VERSION::STRING.starts_with? "4.1"
       "sqlite3:tmp/foo.sqlite3"

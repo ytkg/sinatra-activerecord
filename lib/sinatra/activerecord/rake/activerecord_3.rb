@@ -22,6 +22,10 @@ module Rails
   end
 end
 
-Rake::Task.define_task("db:environment")
+# db:load_config can be overriden manually
+Rake::Task["db:seed"].enhance(["db:load_config"])
 Rake::Task["db:load_config"].clear
+
+# define Rails' tasks as no-op
+Rake::Task.define_task("db:environment")
 Rake::Task.define_task("db:rails_env")

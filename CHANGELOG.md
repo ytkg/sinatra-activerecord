@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 2.0.4
+
+* You're now encouraged to load the app in the `:load_config` Rake task. This
+  way your app will only be required when executing ActiveRecord tasks, and
+  not other potential tasks which don't need the database. Your Rakefile can
+  now be updated to this:
+
+  ```rb
+  require "sinatra/activerecord/rake"
+
+  namespace :db do
+    task :load_config do
+      require "./app" # or whatever your app name is
+    end
+  end
+  ```
+
+* ActiveRecord isn't logged in production anymore.
+
 ## Version 2.0.3
 
 - Use `File.exist?` instead of `File.exists?` to avoid warnings (thanks to [**@matthiase**](https://github.com/matthiase)).

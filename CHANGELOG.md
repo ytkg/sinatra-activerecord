@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.5
+
+* Disabled ActiveRecord logging in tests
+
 ## Version 2.0.4
 
 * You're now encouraged to load the app in the `:load_config` Rake task. This

@@ -93,22 +93,6 @@ RSpec.describe "the sinatra extension" do
     expect{ActiveRecord::Base.connection}.not_to raise_error
   end
 
-
-  it "should log to STDOUT by default" do
-    expect(app.database.logger).to be_kind_of(Logger)
-  end
-
-  it "should not log to STDOUT if Rake is not defined" do
-    stub_const("Rake", Module.new)
-    expect(app.database.logger).to be_nil
-  end
-
-  it "should not log to STDOUT in production" do
-    app.environment = :production
-    expect(app.database.logger).to be_nil
-  end
-
-
   it "raises an error on invalid database.yml" do
     FileUtils.touch("tmp/database.yml")
 

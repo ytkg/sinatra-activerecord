@@ -1,5 +1,4 @@
-seed_loader = Object.new
-seed_loader.instance_eval do
+seed_loader = Class.new do
   def load_seed
     load "#{ActiveRecord::Tasks::DatabaseTasks.db_dir}/seeds.rb"
   end
@@ -11,7 +10,7 @@ ActiveRecord::Tasks::DatabaseTasks.tap do |config|
   config.db_dir                 = "db"
   config.migrations_paths       = ["db/migrate"]
   config.fixtures_path          = "test/fixtures"
-  config.seed_loader            = seed_loader
+  config.seed_loader            = seed_loader.new
   config.database_configuration = ActiveRecord::Base.configurations
 end
 

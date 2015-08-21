@@ -79,6 +79,15 @@ RSpec.describe "the sinatra extension" do
     expect{ActiveRecord::Base.connection}.not_to raise_error
   end
 
+  it "allows specifying multiple databases" do
+    app.root = "spec/fixtures"
+    app.database_file = "database.yml"
+    app.database = database_url
+
+    expect{ActiveRecord::Base.establish_connection(:test)}.not_to raise_error
+    expect{ActiveRecord::Base.establish_connection(:another_test)}.not_to raise_error
+  end
+
   it "expands database file path from the app root if present" do
     app.root = "spec/fixtures"
     app.database_file = "database.yml"
@@ -102,4 +111,5 @@ RSpec.describe "the sinatra extension" do
   it "raises an error on missing database.yml" do
     expect{app.database_file = "foo.yml"}.to raise_error(Errno::ENOENT)
   end
+
 end

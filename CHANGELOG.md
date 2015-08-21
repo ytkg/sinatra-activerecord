@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.7
+
+- Allow multiple databases to be used ([#54](https://github.com/janko-m/sinatra-activerecord/pull/54))
+
 ## Version 2.0.6
 
 * Prefer `DATABASE_URL` to config/database.yml ([#47](https://github.com/janko-m/sinatra-activerecord/issue/47)).

@@ -5,3 +5,7 @@ development:
 test:
   adapter: "sqlite3"
   database: "tmp/foo_test.sqlite3"
+
+another_test:
+  adapter: "sqlite3"
+  database: "tmp/bar_test.sqlite3"

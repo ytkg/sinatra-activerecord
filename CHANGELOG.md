@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.8
+
+- Use the ConnectionManagement AR middelware for clearing active connections
+
 ## Version 2.0.7
 
 - Allow multiple databases to be used ([#54](https://github.com/janko-m/sinatra-activerecord/pull/54))

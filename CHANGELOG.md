@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.9
+
+- Don't try to load config/database.yml if `$DATABASE_URL` is present ([#55](https://github.com/janko-m/sinatra-activerecord/pull/55), thanks to @exviva)
+
 ## Version 2.0.8
 
 - Use the ConnectionManagement AR middelware for clearing active connections

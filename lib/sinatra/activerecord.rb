@@ -43,10 +43,13 @@ module Sinatra
       if spec.is_a?(Hash) and spec.symbolize_keys[environment.to_sym]
         ActiveRecord::Base.configurations = spec.stringify_keys
         ActiveRecord::Base.establish_connection(environment.to_sym)
+      elsif spec.is_a?(Hash)
+        ActiveRecord::Base.configurations[environment.to_s] = spec.stringify_keys
+        ActiveRecord::Base.establish_connection(spec.stringify_keys)
       else
         ActiveRecord::Base.establish_connection(spec)
         ActiveRecord::Base.configurations ||= {}
-        ActiveRecord::Base.configurations[environment.to_s] = ActiveRecord::Base.connection.pool.spec.config
+        ActiveRecord::Base.configurations[environment.to_s] = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(spec).to_hash
       end
     end
 

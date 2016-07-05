@@ -23,7 +23,7 @@ namespace :db do
     end
 
     filename = "#{version}_#{name}.rb"
-    dirname  = ActiveRecord::Migrator.migrations_path
+    dirname  = ActiveRecord::Migrator.migrations_paths.first
     path     = File.join(dirname, filename)
 
     FileUtils.mkdir_p(dirname)

@@ -25,10 +25,14 @@ namespace :db do
     filename = "#{version}_#{name}.rb"
     dirname  = ActiveRecord::Migrator.migrations_paths.first
     path     = File.join(dirname, filename)
+    ar_maj   = ActiveRecord::VERSION::MAJOR
+    ar_min   = ActiveRecord::VERSION::MINOR
+    base     = "ActiveRecord::Migration"
+    base    += "[#{ar_maj}.#{ar_min}]" if ar_maj >= 5
 
     FileUtils.mkdir_p(dirname)
     File.write path, <<-MIGRATION.strip_heredoc
-      class #{name.camelize} < ActiveRecord::Migration
+      class #{name.camelize} < #{base}
         def change
         end
       end

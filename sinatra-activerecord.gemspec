@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name         = "sinatra-activerecord"
-  gem.version      = "2.0.11"
+  gem.version      = "2.0.12"
 
   gem.description  = "Extends Sinatra with ActiveRecord helpers."
   gem.summary      = gem.description

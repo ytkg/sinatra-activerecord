@@ -30,9 +30,7 @@ module Sinatra
 
       # re-connect if database connection dropped (Rails 3 only)
       app.before { ActiveRecord::Base.verify_active_connections! if ActiveRecord::Base.respond_to?(:verify_active_connections!) }
-      if ActiveRecord::ConnectionAdapters.const_defined?(:ConnectionManagement)
-        app.use ActiveRecord::ConnectionAdapters::ConnectionManagement
-      end
+      app.after { ActiveRecord::Base.clear_active_connections! }
     end
 
     def database_file=(path)

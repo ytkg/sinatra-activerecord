@@ -19,9 +19,9 @@ module Sinatra
       if ENV['DATABASE_URL']
         app.set :database, ENV['DATABASE_URL']
       elsif File.exist?("#{Dir.pwd}/config/database.yml")
-        app.set :database_file, "#{Dir.pwd}/config/database.yml" 
+        app.set :database_file, "#{Dir.pwd}/config/database.yml"
       end
-      
+
       unless defined?(Rake) || [:test, :production].include?(app.settings.environment)
         ActiveRecord::Base.logger = Logger.new(STDOUT)
       end

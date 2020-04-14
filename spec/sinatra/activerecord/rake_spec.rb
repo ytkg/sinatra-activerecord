@@ -1,14 +1,15 @@
 require 'spec_helper'
 require 'fileutils'
 
-class ActiveRecord::Migration
-  def migrate_with_quietness(*args)
+module MigrationWithQuiet
+  def migrate(*args)
     suppress_messages do
-      migrate_without_quietness(*args)
+      super(*args)
     end
   end
-  alias_method_chain :migrate, :quietness
 end
+
+ActiveRecord::Migration.send(:prepend, MigrationWithQuiet)
 
 RSpec.describe "the rake tasks" do
   before do
@@ -23,13 +24,14 @@ RSpec.describe "the rake tasks" do
     require 'rake'
     require 'sinatra/activerecord/rake'
 
-    class Rake::Task
-      def invoke_with_reenable
-        invoke_without_reenable
+    module TaskWithReenable
+      def invoke
+        super
         reenable
       end
-      alias_method_chain :invoke, :reenable
     end
+
+    Rake::Task.send(:prepend, TaskWithReenable)
   end
 
   after do

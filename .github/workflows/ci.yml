@@ -28,7 +28,7 @@ jobs:
     - name: Setup Ruby
       uses: actions/setup-ruby@v1
       with:
-        version: ${{ matrix.ruby }}
+        ruby-version: ${{ matrix.ruby }}
     
     - name : Install dependency
       run: |
@@ -38,6 +38,14 @@ jobs:
       run: |
         bundle exec appraisal
         
-    - name: Run rspec test across different active records version
+    - name: Run rspec test across active record 5 and 6
       run: |
-        bundle exec appraisal rspec
+        bundle exec appraisal activerecord-6.0 rspec
+        bundle exec appraisal activerecord-5.0 rspec
+
+    # active record 4 is not compatible with ruby 2.7 due to BigDecimal changes
+    - name: Run rspec test on active record 4
+      run: |
+        bundle exec appraisal activerecord-4.1 rspec
+      exclude:
+        - ruby: '2.7.x'

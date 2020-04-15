@@ -25,8 +25,8 @@ RSpec.describe "the rake tasks" do
     require 'sinatra/activerecord/rake'
 
     module TaskWithReenable
-      def invoke
-        super
+      def invoke(*args)
+        super(*args)
         reenable
       end
     end
@@ -39,15 +39,56 @@ RSpec.describe "the rake tasks" do
   end
 
   it "has all the rake tasks working" do
-    ENV["NAME"] = "create_users"
+    begin
+      ENV["NAME"] = "create_users"
 
-    Rake::Task["db:create"].invoke
-    Rake::Task["db:create_migration"].invoke
-    Rake::Task["db:migrate"].invoke
-    Rake::Task["db:migrate:redo"].invoke
-    Rake::Task["db:reset"].invoke
-    Rake::Task["db:seed"].invoke
+      Rake::Task["db:create"].invoke
+      Rake::Task["db:create_migration"].invoke
+      Rake::Task["db:migrate"].invoke
+      Rake::Task["db:migrate:redo"].invoke
+      Rake::Task["db:reset"].invoke
+      Rake::Task["db:seed"].invoke
 
-    ENV.delete("NAME")
+      ENV.delete("NAME")
+    rescue SystemExit
+      fail 'should not exit'
+    end
+
+    # ensure the migration file is created
+    migration_file = Dir["#{FileUtils.pwd}/db/migrate/*_create_users.rb"]
+    expect(migration_file).not_to be_empty
+
+    schema_file = Dir["#{FileUtils.pwd}/db/schema.rb"]
+    expect(schema_file).not_to be_empty
+
+    seeds_file = Dir["#{FileUtils.pwd}/db/seeds.rb"]
+    expect(seeds_file).not_to be_empty
+  end
+
+  it 'works with providing argument instead of named env param' do
+    begin
+      ARGV[1] = 'create_users'
+
+      Rake::Task["db:create"].invoke
+      Rake::Task["db:create_migration"].invoke
+      Rake::Task["db:migrate"].invoke
+      Rake::Task["db:migrate:redo"].invoke
+      Rake::Task["db:reset"].invoke
+      Rake::Task["db:seed"].invoke
+
+      ARGV = []
+    rescue SystemExit
+      fail 'should not exit'
+    end
+
+    # ensure the migration file is created
+    migration_file = Dir["#{FileUtils.pwd}/db/migrate/*_create_users.rb"]
+    expect(migration_file).not_to be_empty
+
+    schema_file = Dir["#{FileUtils.pwd}/db/schema.rb"]
+    expect(schema_file).not_to be_empty
+
+    seeds_file = Dir["#{FileUtils.pwd}/db/seeds.rb"]
+    expect(seeds_file).not_to be_empty
   end
 end

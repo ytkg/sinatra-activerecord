@@ -1,4 +1,4 @@
-name: Ruby gem rspec test
+name: rspec
 
 on:
   push:

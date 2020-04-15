@@ -5,13 +5,13 @@ require "fileutils"
 namespace :db do
   desc "Create a migration (parameters: NAME, VERSION)"
   task :create_migration do
-    unless ENV["NAME"]
+    unless ENV["NAME"] || ARGV[1]
       puts "No NAME specified. Example usage: `rake db:create_migration NAME=create_users`"
       exit
     end
 
-    name    = ENV["NAME"]
-    version = ENV["VERSION"] || Time.now.utc.strftime("%Y%m%d%H%M%S")
+    name    = ENV["NAME"] || ARGV[1]
+    version = ENV["VERSION"] || ARGV[2] || Time.now.utc.strftime("%Y%m%d%H%M%S")
 
     ActiveRecord::Migrator.migrations_paths.each do |directory|
       next unless File.exist?(directory)

@@ -5,6 +5,14 @@ require "fileutils"
 namespace :db do
   desc "Create a migration (parameters: NAME, VERSION)"
   task :create_migration do
+    ARGV.each do |a| 
+      # when we run 'rake db:create_migration create_users v1',
+      # rake will also run 'rake create_users' and 'rake v1'
+      # to avoid rake abort, we define an empty method for these (ie: "task :create_users do ; end")
+      next if a.nil?
+      task a.to_sym do ; end 
+    end
+
     unless ENV["NAME"] || ARGV[1]
       puts "No NAME specified. Example usage: `rake db:create_migration NAME=create_users`"
       exit

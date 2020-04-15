@@ -4,6 +4,11 @@ Extends [Sinatra](http://www.sinatrarb.com/) with extension methods and Rake
 tasks for dealing with an SQL database using the
 [ActiveRecord ORM](https://github.com/rails/rails/tree/master/activerecord).
 
+![test badge](https://github.com/sinatra-activerecord/sinatra-activerecord/workflows/rspec/badge.svg)
+
+## Requirement
+ActiveRecord >= 4.1
+
 ## Setup
 
 Put it in your `Gemfile`, along with the adapter of your database. For

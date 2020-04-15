@@ -6,4 +6,4 @@ gem "pry"
 gem "pry-byebug"
 gem "activerecord", "~> 6.0.0"
 
-gemspec :path => "../"
+gemspec path: "../"

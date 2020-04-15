@@ -1,0 +1,31 @@
+name: Ruby gem rspec test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        version: 2.6.x
+    
+    - name : Install dependency
+      run: |
+        bundle install
+        
+    - name: Run appraisal to install different active records version
+      run: |
+        bundle exec appraisal
+        
+    - name: Run rspec test across different active records version
+      run: |
+        bundle exec appraisal rspec

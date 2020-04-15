@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name         = "sinatra-activerecord"
-  gem.version      = "2.0.15"
+  gem.version      = "2.0.16"
 
   gem.description  = "Extends Sinatra with ActiveRecord helpers."
   gem.summary      = gem.description
@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = ">= 1.9.2"
 
   gem.add_dependency "sinatra", ">= 1.0"
-  gem.add_dependency "activerecord", ">= 3.2"
+  gem.add_dependency "activerecord", ">= 4.1"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec", "~> 3.1"

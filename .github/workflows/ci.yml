@@ -7,16 +7,28 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test:
     name: Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby:
+          - '2.5.x'
+          - '2.6.x'
+          - '2.7.x'
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby 2.6
+    - name: Checkout current branch
+      uses: actions/checkout@v2
+
+    - name: Install sqlite3 on system
+        run: |
+          sudo apt-get install libsqlite3-dev
+
+    - name: Setup Ruby
       uses: actions/setup-ruby@v1
       with:
-        version: 2.6.x
+        version: ${{ matrix.ruby }}
     
     - name : Install dependency
       run: |

@@ -11,7 +11,7 @@ namespace :db do
     end
 
     name    = ENV["NAME"] || ARGV[1]
-    version = ENV["VERSION"] || Time.now.utc.strftime("%Y%m%d%H%M%S")
+    version = ENV["VERSION"] || ARGV[2] || Time.now.utc.strftime("%Y%m%d%H%M%S")
 
     ActiveRecord::Migrator.migrations_paths.each do |directory|
       next unless File.exist?(directory)

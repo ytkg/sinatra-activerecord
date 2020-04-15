@@ -16,6 +16,14 @@ jobs:
           - '2.5.x'
           - '2.6.x'
           - '2.7.x'
+        activerecord:
+          - '4.1'
+          - '5.0'
+          - '6.0'
+        exclude:
+        # active record 4.1 is not compatible with ruby 2.7 due to BigDecimal changes
+        - ruby: '2.7.x'
+          activerecord: '4.1' 
 
     steps:
     - name: Checkout current branch
@@ -38,14 +46,8 @@ jobs:
       run: |
         bundle exec appraisal
         
-    - name: Run rspec test across active record 5 and 6
+    - name: Run rspec test across active record
       run: |
-        bundle exec appraisal activerecord-6.0 rspec
-        bundle exec appraisal activerecord-5.0 rspec
+        bundle exec appraisal activerecord-${{ matrix.activerecord }} rspec
 
-    # active record 4 is not compatible with ruby 2.7 due to BigDecimal changes
-    - name: Run rspec test on active record 4
-      run: |
-        bundle exec appraisal activerecord-4.1 rspec
-      exclude:
-        - ruby: '2.7.x'
+    

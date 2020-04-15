@@ -16,19 +16,27 @@ jobs:
           - '2.5.x'
           - '2.6.x'
           - '2.7.x'
+        activerecord:
+          - '4.1'
+          - '5.0'
+          - '6.0'
+        exclude:
+        # active record 4.1 is not compatible with ruby 2.7 due to BigDecimal changes
+        - ruby: '2.7.x'
+          activerecord: '4.1' 
 
     steps:
     - name: Checkout current branch
       uses: actions/checkout@v2
 
     - name: Install sqlite3 on system
-        run: |
-          sudo apt-get install libsqlite3-dev
+      run: |
+        sudo apt-get install libsqlite3-dev
 
     - name: Setup Ruby
       uses: actions/setup-ruby@v1
       with:
-        version: ${{ matrix.ruby }}
+        ruby-version: ${{ matrix.ruby }}
     
     - name : Install dependency
       run: |
@@ -38,6 +46,8 @@ jobs:
       run: |
         bundle exec appraisal
         
-    - name: Run rspec test across different active records version
+    - name: Run rspec test across active record
       run: |
-        bundle exec appraisal rspec
+        bundle exec appraisal activerecord-${{ matrix.activerecord }} rspec
+
+    

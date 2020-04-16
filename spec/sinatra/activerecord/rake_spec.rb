@@ -75,8 +75,6 @@ RSpec.describe "the rake tasks" do
       Rake::Task["db:migrate:redo"].invoke
       Rake::Task["db:reset"].invoke
       Rake::Task["db:seed"].invoke
-
-      ARGV = []
     rescue SystemExit
       fail 'should not exit'
     end

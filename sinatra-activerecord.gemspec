@@ -2,14 +2,14 @@
 
 Gem::Specification.new do |gem|
   gem.name         = "sinatra-activerecord"
-  gem.version      = "2.0.20"
+  gem.version      = "2.0.21"
 
   gem.description  = "Extends Sinatra with ActiveRecord helpers."
   gem.summary      = gem.description
-  gem.homepage     = "http://github.com/janko-m/sinatra-activerecord"
+  gem.homepage     = "http://github.com/sinatra-activerecord/sinatra-activerecord"
 
-  gem.authors      = ["Blake Mizerany", "Janko Marohnić"]
-  gem.email        = "janko.marohnic@gmail.com"
+  gem.authors      = ["Blake Mizerany", "Janko Marohnić", "Axel Kee"]
+  gem.email        = "axel@rubyyagi.com"
 
   gem.license      = "MIT"
 

@@ -35,6 +35,8 @@ If you have a `config/database.yml`, it will automatically be loaded, no need
 to specify it. Also, in production, the `$DATABASE_URL` environment variable
 will automatically be read as the database (if you haven't specified otherwise).
 
+If both `config/database.yml` and `$DATABASE_URL` are present, the database configuration of this two will be merged, with $DATABASE_URL's variable taking precedence over database.yml (for the same variable / key).
+
 Note that in **modular** Sinatra applications you will need to first register
 the extension:
 
@@ -147,8 +149,9 @@ This gem was made in 2009 by Blake Mizerany, creator of Sinatra.
 
 ## Social
 
-You can follow me on Twitter, I'm [@jankomarohnic](http://twitter.com/jankomarohnic).
+You can follow Janko on Twitter, [@jankomarohnic](http://twitter.com/jankomarohnic).
+You can follow Axel on Twitter, [@soulchildpls](http://twitter.com/soulchildpls).
 
 ## License
 
-[MIT](https://github.com/janko-m/sinatra-activerecord/blob/master/LICENSE)
+[MIT](https://github.com/sinatra-activerecord/sinatra-activerecord/blob/master/LICENSE)

@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.1.0
+
+- If both config/database.yml and $DATABASE_URL is present, the database configuration will be merged from this two, and $DATABASE_URL's variables will take precedence. (https://github.com/sinatra-activerecord/sinatra-activerecord/pull/103)
+
 ## Version 2.0.9
 
 - Don't try to load config/database.yml if `$DATABASE_URL` is present ([#55](https://github.com/janko-m/sinatra-activerecord/pull/55), thanks to @exviva)

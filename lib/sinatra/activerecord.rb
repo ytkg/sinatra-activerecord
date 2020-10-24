@@ -16,7 +16,19 @@ module Sinatra
 
   module ActiveRecordExtension
     def self.registered(app)
-      if ENV['DATABASE_URL']
+      if ENV['DATABASE_URL'] && File.exist?("#{Dir.pwd}/config/database.yml")
+        path = "#{Dir.pwd}/config/database.yml"
+        url = ENV['DATABASE_URL']
+        file_path = File.join(root, path) if Pathname(path).relative? and root
+        file_spec = YAML.load(ERB.new(File.read(path)).result) || {}
+
+        url_spec = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(url).to_hash
+
+        # url_spec will override the same key, if exist
+        final_spec = file_spec.keys.map{ |env| [env, file_spec[env].merge(url_spec)] }.to_h
+
+        app.set :database, final_spec
+      elsif ENV['DATABASE_URL']
         app.set :database, ENV['DATABASE_URL']
       elsif File.exist?("#{Dir.pwd}/config/database.yml")
         app.set :database_file, "#{Dir.pwd}/config/database.yml"

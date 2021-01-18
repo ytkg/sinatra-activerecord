@@ -6,7 +6,7 @@ RSpec.describe "the sinatra extension" do
 
   let(:url_sqlite_db_name) { 'foo_baz' }
   let(:database_url) do
-    if ActiveRecord::VERSION::STRING.starts_with? "4.1"
+    if ActiveRecord::VERSION::STRING.start_with? "4.1"
       "sqlite3:tmp/#{url_sqlite_db_name}.sqlite3"
     else
       "sqlite3:///tmp/#{url_sqlite_db_name}.sqlite3"

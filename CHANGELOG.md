@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.22
+
+- Added compability fix for ActiveRecord 6.1 ([#107](https://github.com/janko-m/sinatra-activerecord/issue/107)), as they have moved ConnectionUrlResolver to another module. Thanks Richard Peck(@richpeck) for contributing to this.
+
 ## Version 2.0.21
 
 - If both config/database.yml and $DATABASE_URL is present, the database configuration will be merged from this two, and $DATABASE_URL's variables will take precedence. (https://github.com/sinatra-activerecord/sinatra-activerecord/pull/103)

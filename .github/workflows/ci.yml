@@ -41,6 +41,7 @@ jobs:
     
     - name : Install dependency
       run: |
+        gem install bundler
         bundle install
         
     - name: Run appraisal to install different active records version

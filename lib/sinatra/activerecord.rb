@@ -7,6 +7,8 @@ require 'pathname'
 require 'yaml'
 require 'erb'
 
+require 'active_record/database_configurations/connection_url_resolver' if Gem.loaded_specs["activerecord"].version >= Gem::Version.create('6.1')
+
 module Sinatra
   module ActiveRecordHelper
     def database
@@ -22,8 +24,13 @@ module Sinatra
         file_path = File.join(root, path) if Pathname(path).relative? and root
         file_spec = YAML.load(ERB.new(File.read(path)).result) || {}
 
-        url_spec = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(url).to_hash
-
+        # ActiveRecord 6.1+ has moved the connection url resolver to another module
+        if Gem.loaded_specs["activerecord"].version >= Gem::Version.create('6.1')
+          url_spec = ActiveRecord::DatabaseConfigurations::ConnectionUrlResolver.new(url).to_hash
+        else
+          url_spec = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(url).to_hash
+        end
+        
         # url_spec will override the same key, if exist
         final_spec = file_spec.keys.map{ |env| [env, file_spec[env].merge(url_spec)] }.to_h
 

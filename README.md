@@ -37,6 +37,10 @@ will automatically be read as the database (if you haven't specified otherwise).
 
 If both `config/database.yml` and `$DATABASE_URL` are present, the database configuration of this two will be merged, with $DATABASE_URL's variable taking precedence over database.yml (for the same variable / key).
 
+
+Note: If you are using ActiveRecord 6.0 and above, and have [defined multiple databases](https://guides.rubyonrails.org/active_record_multiple_databases.html#setting-up-your-application) for the database.yml, the $DATABASE_URL configuration will be discarded, following [Active Record convention here](https://github.com/rails/rails/blob/main/activerecord/lib/active_record/database_configurations.rb#L169).
+
+
 Note that in **modular** Sinatra applications you will need to first register
 the extension:
 

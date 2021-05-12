@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.0.23
+- For ActiveRecord 6.0 and above, if the the configuration (database.yml) has multiple databases defined, it will discard the DATABASE_URL spec (if it is supplied from environment variables), following [Active Record convention here](https://github.com/rails/rails/blob/main/activerecord/lib/active_record/database_configurations.rb#L169). Thanks JoakimKlaxit (@JoakimKlaxit) for contributing to this.
+
+
 ## Version 2.0.22
 
 - Added compability fix for ActiveRecord 6.1 ([#107](https://github.com/janko-m/sinatra-activerecord/issue/107)), as they have moved ConnectionUrlResolver to another module. Thanks Richard Peck(@richpeck) for contributing to this.

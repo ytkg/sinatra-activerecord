@@ -31,8 +31,18 @@ module Sinatra
           url_spec = ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(url).to_hash
         end
         
-        # url_spec will override the same key, if exist
-        final_spec = file_spec.keys.map{ |env| [env, file_spec[env].merge(url_spec)] }.to_h
+        # if the configuration concerns only one database, and url_spec exist, url_spec will override the same key
+        # if the configuration has multiple databases (Rails 6.0+ feature), url_spec is discarded
+        # Following Active Record config convention
+        # https://github.com/rails/rails/blob/main/activerecord/lib/active_record/database_configurations.rb#L169
+        final_spec = file_spec.keys.map do |env|
+          config = file_spec[env]
+          if config.is_a?(Hash) && config.all? { |_k, v| v.is_a?(Hash) }
+            [env, config]
+          else
+            [env, config.merge(url_spec)]
+          end
+        end.to_h
 
         app.set :database, final_spec
       elsif ENV['DATABASE_URL']

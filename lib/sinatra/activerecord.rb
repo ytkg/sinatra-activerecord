@@ -22,7 +22,9 @@ module Sinatra
         path = "#{Dir.pwd}/config/database.yml"
         url = ENV['DATABASE_URL']
         file_path = File.join(root, path) if Pathname(path).relative? and root
-        file_spec = YAML.load(ERB.new(File.read(path)).result) || {}
+        source = ERB.new(File.read(path)).result
+        file_spec = YAML.respond_to?(:unsafe_load) ? YAML.unsafe_load(source) : YAML.load(source)
+        file_spec ||= {}
 
         # ActiveRecord 6.1+ has moved the connection url resolver to another module
         if Gem.loaded_specs["activerecord"].version >= Gem::Version.create('6.1')
@@ -64,7 +66,9 @@ module Sinatra
 
     def database_file=(path)
       path = File.join(root, path) if Pathname(path).relative? and root
-      spec = YAML.load(ERB.new(File.read(path)).result) || {}
+      source = ERB.new(File.read(path)).result
+      spec = YAML.respond_to?(:unsafe_load) ? YAML.unsafe_load(source) : YAML.load(source)
+      spec ||= {}
       set :database, spec
     end
 

@@ -105,6 +105,7 @@ RSpec.describe "the sinatra extension" do
 
     expect{ActiveRecord::Base.connection}.not_to raise_error
 
+    ENV.delete("DATABASE_URL")
     FileUtils.rm_rf("config")
   end
 
@@ -121,6 +122,7 @@ RSpec.describe "the sinatra extension" do
 
     expect{ActiveRecord::Base.connection}.not_to raise_error
 
+    ENV.delete("DATABASE_URL")
     FileUtils.rm_rf("config")
   end
 

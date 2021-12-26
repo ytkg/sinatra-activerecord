@@ -22,3 +22,10 @@ multiple_db_test:
     adapter: "sqlite3"
     database: "tmp/bar_test.sqlite3"
     pool: 3
+
+alias: &alias
+  adapter: "sqlite3"
+  database: "tmp/bar_test.sqlite3"
+
+alias_test:
+  <<: *alias

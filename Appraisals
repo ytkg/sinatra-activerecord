@@ -1,5 +1,5 @@
-appraise 'activerecord-7.0' do
-  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7.0')
+if RUBY_VERSION >= '2.7.0'
+  appraise 'activerecord-7.0' do
     gem 'activerecord', '~> 7.0.0'
   end
 end

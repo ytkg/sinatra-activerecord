@@ -28,7 +28,7 @@ jobs:
         # active record 4.1 is not compatible with ruby 2.7 due to BigDecimal changes
         - ruby: '2.7'
           activerecord: '4.1' 
-        # ActiveRecord 5.x doesn't works on Ruby 3.0+
+        # ActiveRecord 5.x doesn't work on Ruby 3.0+
         - ruby: '3.0'
           activerecord: '4.1'
         - ruby: '3.0'
@@ -37,7 +37,7 @@ jobs:
           activerecord: '4.1'
         - ruby: 'head'
           activerecord: '5.0'
-        # ActiveRecord 7.x doesn't works on Ruby 2.6 and below
+        # ActiveRecord 7.x doesn't work on Ruby 2.6 and below
         - ruby: '2.5'
           activerecord: '7.0'
         - ruby: '2.6'

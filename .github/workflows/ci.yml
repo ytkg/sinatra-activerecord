@@ -42,6 +42,9 @@ jobs:
           activerecord: '7.0'
         - ruby: '2.6'
           activerecord: '7.0'
+        # Ruby 3.1 has problem with Rails 7 currently (https://gist.github.com/yahonda/2776d8d7b6ea7045359f38c10449937b#add-classdescendants)
+        - ruby: 'head'
+          activerecord: '7.0'
 
     steps:
     - name: Checkout current branch

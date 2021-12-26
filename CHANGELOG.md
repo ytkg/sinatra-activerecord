@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.0.24
+- Fixed compatibility with Psych version 4.0.0+ , use unsafe_load if available.
+- Added Ruby 3.0 and head (latest version of Ruby) to the CI matrix
+Thanks Onaka (@onk) for contributing to this.
+
 ## Version 2.0.23
 - For ActiveRecord 6.0 and above, if the the configuration (database.yml) has multiple databases defined, it will discard the DATABASE_URL spec (if it is supplied from environment variables), following [Active Record convention here](https://github.com/rails/rails/blob/main/activerecord/lib/active_record/database_configurations.rb#L169). Thanks JoakimKlaxit (@JoakimKlaxit) for contributing to this.
 

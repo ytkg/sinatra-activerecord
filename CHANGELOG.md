@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 2.0.25
+- Added support for ActiveRecord 7.0
+
 ## Version 2.0.24
 - Fixed compatibility with Psych version 4.0.0+ , use unsafe_load if available.
 - Added Ruby 3.0 and head (latest version of Ruby) to the CI matrix

@@ -13,9 +13,11 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '2.5.x'
-          - '2.6.x'
-          - '2.7.x'
+          - '2.5'
+          - '2.6'
+          - '2.7'
+          - '3.0'
+          - 'head'
         activerecord:
           - '4.1'
           - '5.0'
@@ -23,8 +25,17 @@ jobs:
           - '6.1'
         exclude:
         # active record 4.1 is not compatible with ruby 2.7 due to BigDecimal changes
-        - ruby: '2.7.x'
+        - ruby: '2.7'
           activerecord: '4.1' 
+        # ActiveRecord 5.x doesn't works on Ruby 3.0+
+        - ruby: '3.0'
+          activerecord: '4.1'
+        - ruby: '3.0'
+          activerecord: '5.0'
+        - ruby: 'head'
+          activerecord: '4.1'
+        - ruby: 'head'
+          activerecord: '5.0'
 
     steps:
     - name: Checkout current branch
@@ -35,7 +46,7 @@ jobs:
         sudo apt-get install libsqlite3-dev
 
     - name: Setup Ruby
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
     

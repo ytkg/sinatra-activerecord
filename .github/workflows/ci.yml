@@ -54,10 +54,11 @@ jobs:
       run: |
         gem install bundler
         bundle install
+        gem update --system 3.2.3
         
     - name: Run appraisal to install different active records version
       run: |
-        bundle exec appraisal
+        bundle exec appraisal install
         
     - name: Run rspec test across active record
       run: |

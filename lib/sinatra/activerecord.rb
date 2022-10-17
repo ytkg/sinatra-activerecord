@@ -21,7 +21,6 @@ module Sinatra
       if ENV['DATABASE_URL'] && File.exist?("#{Dir.pwd}/config/database.yml")
         path = "#{Dir.pwd}/config/database.yml"
         url = ENV['DATABASE_URL']
-        file_path = File.join(root, path) if Pathname(path).relative? and root
         source = ERB.new(File.read(path)).result
         file_spec = YAML.respond_to?(:unsafe_load) ? YAML.unsafe_load(source) : YAML.load(source)
         file_spec ||= {}

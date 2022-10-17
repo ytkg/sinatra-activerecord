@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 2.0.26
+Removed unused variables, and removed support for ruby 2.5
+
 ## Version 2.0.25
 - Added support for ActiveRecord 7.0
 

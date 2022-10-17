@@ -16,7 +16,7 @@ jobs:
           - '2.6'
           - '2.7'
           - '3.0'
-          - 'head'
+          - '3.1'
         activerecord:
           - '4.1'
           - '5.0'
@@ -32,9 +32,9 @@ jobs:
           activerecord: '4.1'
         - ruby: '3.0'
           activerecord: '5.0'
-        - ruby: 'head'
+        - ruby: '3.1'
           activerecord: '4.1'
-        - ruby: 'head'
+        - ruby: '3.1'
           activerecord: '5.0'
         # ActiveRecord 7.x doesn't work on Ruby 2.6 and below
         - ruby: '2.6'

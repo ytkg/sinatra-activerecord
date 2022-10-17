@@ -60,7 +60,7 @@ jobs:
       run: |
         gem install bundler
         bundle install
-        gem update --system 3.2.3
+        gem update --system 3.3.3
         
     - name: Run appraisal to install different active records version
       run: |
